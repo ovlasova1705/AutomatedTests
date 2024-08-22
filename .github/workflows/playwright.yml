@@ -49,6 +49,8 @@ jobs:
 
       - name: Deploy Allure Report to GitHub Pages
         if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run deploy:report
 
       - name: Clean Allure Report folder
