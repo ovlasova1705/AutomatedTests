@@ -10,7 +10,7 @@
     "allure:clean:results": "npx rimraf allure-results",
     "allure:clean:report": "npx rimraf allure-report",
     "allure:report": "npm run allure:generate && npm run allure:clean:results && npm run allure:open",
-    "deploy:report": "gh-pages -d allure-report"
+    "deploy:report": "gh-pages -d allure-report -r https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/ovlasova1705/AutomatedTests.git"
   },
   "keywords": [],
   "author": "",
