@@ -52,12 +52,12 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
-- name: Deploy Allure Report to GitHub Pages
-  if: success()
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    GITHUB_ACTOR: ${{ github.actor }}
-  run: npx gh-pages -d allure-report -r https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/ovlasova1705/AutomatedTests.git
+      - name: Deploy Allure Report to GitHub Pages
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: npx gh-pages -d allure-report -r https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/ovlasova1705/AutomatedTests.git
 
       - name: Clean Allure Report folder
         run: npm run allure:clean:report
