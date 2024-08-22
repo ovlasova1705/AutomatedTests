@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Clean node_modules
+        run: rm -rf node_modules
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
@@ -24,11 +27,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+      - name: Install Allure Commandline
+        run: npm install -g allure-commandline
+
       - name: Run Playwright tests
         run: npx playwright test --reporter=allure-playwright
 
       - name: Generate Allure Report
-        run: npm run allure:generate
+        run: npx allure generate allure-results --clean
+
+      - name: List allure-report directory
+        run: ls -la allure-report
 
       - name: Upload Allure Report as artifact
         if: always()
