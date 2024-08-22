@@ -57,7 +57,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
-        run: npm run deploy:report
+        run: gh-pages -d allure-report -r https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/ovlasova1705/AutomatedTests.git
 
       - name: Clean Allure Report folder
         run: npm run allure:clean:report
