@@ -3,12 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "allure:generate": "npx allure generate allure-results --clean",
+    "allure:open": "npx allure open",
+    "allure:clean:results": "npx rimraf allure-results",
+    "allure:clean:report": "npx rimraf allure-report",
+    "allure:report": "npm run allure:generate && npm run allure:clean:results && npm run allure:open",
+    "deploy:report": "gh-pages -d allure-report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.46.1",
-    "@types/node": "^22.5.0"
+    "@types/node": "^22.5.0",
+    "allure-playwright": "^3.0.0-beta.10",
+    "gh-pages": "^6.1.1"
   }
 }
