@@ -62,6 +62,15 @@ jobs:
       - name: Clean Allure Report folder
         run: npm run allure:clean:report
 
+      - name: Build TypeScript files
+        run: npm run build
+
+      - name: Send detailed Telegram report
+        run: node dist/send-telegram-report.js
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
       - name: Send Telegram notification on success
         if: success()
         run: |

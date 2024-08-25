@@ -8,5 +8,6 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist"
   },
-  "include": ["tests/**/*.ts"]
+  "include": ["send-telegram-report.ts"],
+  "exclude": ["node_modules", "tests/**/*.ts"]
 }
