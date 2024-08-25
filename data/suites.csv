@@ -1,2 +1,2 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","552","has title","chromium","Sun Aug 25 14:09:24 UTC 2024","passed","Sun Aug 25 14:09:25 UTC 2024","","example.spec.ts","",""
+"","495","has title","chromium","Sun Aug 25 14:30:42 UTC 2024","passed","Sun Aug 25 14:30:42 UTC 2024","","example.spec.ts","",""
