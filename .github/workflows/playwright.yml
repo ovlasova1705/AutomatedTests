@@ -65,18 +65,20 @@ jobs:
       - name: Build TypeScript files
         run: npm run build
 
-      - name: Send detailed Telegram report
-        run: node dist/send-telegram-report.js
+      - name: Send detailed Telegram report on success
+        if: success()
+        run: |
+          echo "✅ Tests passed successfully!" > success_message.txt
+          node dist/send-telegram-report.js
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-      - name: Send Telegram notification on success
-        if: success()
-        run: |
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} -d text="✅ Tests passed successfully!"
-
-      - name: Send Telegram notification on failure
+      - name: Send detailed Telegram report on failure
         if: failure()
         run: |
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} -d text="❌ Tests failed. Check the details in the Actions tab."
+          echo "❌ Tests failed. Check the details in the Actions tab." > failure_message.txt
+          node dist/send-telegram-report.js
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

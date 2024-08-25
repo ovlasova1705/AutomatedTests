@@ -4,52 +4,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
 const axios_1 = __importDefault(require("axios"));
-function findResultFile(dir) {
-    const files = fs_1.default.readdirSync(dir);
-    const resultFile = files.find((file) => file.endsWith("-result.json"));
-    if (!resultFile) {
-        throw new Error("Result file not found");
-    }
-    return path_1.default.join(dir, resultFile);
-}
+const path_1 = __importDefault(require("path"));
 const resultsDir = "./allure-results";
-function parseTestResults(reportPath) {
-    const report = JSON.parse(fs_1.default.readFileSync(reportPath, "utf8"));
-    const totalScenarios = 1;
-    const totalPassed = report.status === "passed" ? 1 : 0;
-    const duration = report.duration;
-    return {
-        totalScenarios,
-        totalPassed,
-        duration,
-        passedPercentage: ((totalPassed / totalScenarios) * 100).toFixed(2),
-    };
-}
-async function sendTelegramNotification(results) {
+async function sendTelegramNotification() {
+    const reportFiles = fs_1.default
+        .readdirSync(resultsDir)
+        .filter((file) => file.endsWith("-result.json"));
+    const totalScenarios = reportFiles.length;
+    let totalPassed = 0;
+    let totalFailed = 0;
+    let totalDuration = 0;
+    for (const file of reportFiles) {
+        const filePath = path_1.default.join(resultsDir, file);
+        const content = JSON.parse(fs_1.default.readFileSync(filePath, "utf-8"));
+        totalDuration += content.stop - content.start;
+        if (content.status === "passed") {
+            totalPassed += 1;
+        }
+        else if (content.status === "failed") {
+            totalFailed += 1;
+        }
+    }
+    const durationInSeconds = (totalDuration / 1000).toFixed(2);
+    const passedPercentage = ((totalPassed / totalScenarios) * 100).toFixed(2);
+    const successMessage = fs_1.default.existsSync("success_message.txt")
+        ? fs_1.default.readFileSync("success_message.txt", "utf-8")
+        : "";
+    const failureMessage = fs_1.default.existsSync("failure_message.txt")
+        ? fs_1.default.readFileSync("failure_message.txt", "utf-8")
+        : "";
+    const messagePrefix = successMessage || failureMessage;
     const message = `
-    Results:
-    Duration: ${new Date(results.duration).toISOString().substr(11, 8)}
-    Total scenarios: ${results.totalScenarios}
-    Total passed: ${results.totalPassed} (${results.passedPercentage}%)
-    Report available at the link: https://ovlasova1705.github.io/AutomatedTests/
-    `;
-    const response = await axios_1.default.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    ${messagePrefix}
+    📝 *Test Report*:
+    - Total scenarios: ${totalScenarios}
+    - Passed: ${totalPassed} (${passedPercentage}%)
+    - Failed: ${totalFailed}
+    - Duration: ${durationInSeconds} seconds
+
+    [View Full Report](https://ovlasova1705.github.io/AutomatedTests/)
+  `;
+    await axios_1.default.post(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
         chat_id: process.env.TELEGRAM_CHAT_ID,
         text: message,
+        parse_mode: "Markdown",
     });
-    return response.data;
 }
-async function main() {
-    try {
-        const reportPath = findResultFile(resultsDir);
-        const results = parseTestResults(reportPath);
-        await sendTelegramNotification(results);
-    }
-    catch (error) {
-        console.error("Error processing test results:", error);
-    }
-}
-main().catch(console.error);
-main().catch(console.error);
+sendTelegramNotification().catch(console.error);
