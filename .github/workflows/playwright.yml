@@ -61,3 +61,13 @@ jobs:
 
       - name: Clean Allure Report folder
         run: npm run allure:clean:report
+
+      - name: Send Telegram notification on success
+        if: success()
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} -d text="✅ Tests passed successfully!"
+
+      - name: Send Telegram notification on failure
+        if: failure()
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} -d text="❌ Tests failed. Check the details in the Actions tab."
