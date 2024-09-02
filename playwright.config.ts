@@ -31,7 +31,7 @@ export default defineConfig({
 
     // Use baseURL from .env file
     baseURL: process.env.baseURL || "https://www.saucedemo.com/",
-    headless: false,
+    headless: true,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
