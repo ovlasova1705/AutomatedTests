@@ -13,10 +13,17 @@ async function sendTelegramNotification() {
   let totalFailed = 0;
   let totalDuration = 0;
 
+  let testNames = [];
+
   for (const file of reportFiles) {
     const filePath = path.join(resultsDir, file);
     const content = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     totalDuration += content.stop - content.start;
+
+    testNames.push({
+      name: content.name,
+      status: content.status,
+    });
 
     if (content.status === "passed") {
       totalPassed += 1;
@@ -36,6 +43,15 @@ async function sendTelegramNotification() {
     : "";
   const messagePrefix = successMessage || failureMessage;
 
+  const testDetails = testNames
+    .map(
+      (test) =>
+        `- *${test.name}*: ${
+          test.status === "passed" ? "✅ Passed" : "❌ Failed"
+        }`
+    )
+    .join("\n");
+
   const message = `
     ${messagePrefix}
     📝 *Test Report*:
@@ -43,6 +59,7 @@ async function sendTelegramNotification() {
     - Passed: ${totalPassed} (${passedPercentage}%)
     - Failed: ${totalFailed}
     - Duration: ${durationInSeconds} seconds
+     ${testDetails}
 
     [View Full Report](https://ovlasova1705.github.io/AutomatedTests/)
   `;
