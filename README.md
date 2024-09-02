@@ -15,6 +15,21 @@ The tests are written in **TypeScript** using **Playwright** for testing across 
 - **📲 Telegram Notifications**:  
   The project is connected to **Telegram** to send notifications about the test results. You’ll get updates on both successful and failed tests.
 
+## 🛠️ **Technologies and tools**
+
+<p  align="center">
+
+<code><img width="5%" title="Playwright" src="media/logo/playwright.svg"></code>
+<code><img width="5%" title="TypeScript" src="media/logo/ts.svg"></code>
+<code><img width="5%" title="Node.js" src="media/logo/nodejs.svg"></code>
+<code><img width="5%" title="Visual Studio Code" src="media/logo/vsc.svg"></code>
+<code><img width="5%" title="GitHub" src="media/logo/github.svg"></code>
+<code><img width="5%" title="GitHubActions" src="media/logo/githubActions.svg"></code>
+<code><img width="5%" title="Allure" src="media/logo/allure.svg"></code>
+<code><img width="5%" title="Telegram" src="media/logo/telegram.svg"></code>
+
+</p>
+
 ## ⚙️ **Current Setup**
 
 - **🧪 End-to-End Test for Swag Labs**:  
