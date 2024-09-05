@@ -1,2 +1,2 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","1996","end-to-end test for Swag Labs","chromium","Mon Sep 02 12:20:03 UTC 2024","passed","Mon Sep 02 12:20:05 UTC 2024","","e2e.spec.ts","",""
+"","2003","end-to-end test for Swag Labs","chromium","Thu Sep 05 13:06:44 UTC 2024","passed","Thu Sep 05 13:06:46 UTC 2024","","e2e.spec.ts","",""
